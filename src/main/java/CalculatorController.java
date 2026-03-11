@@ -9,19 +9,20 @@ public class CalculatorController {
     @FXML private TextField number2Field;
     @FXML private Label resultLabel;
 
+    private Calculator calculator;
     @FXML
     private void onCalculateClick() {
         try {
+
+            String text = Calculator.calculate(number1Field.getText(), number2Field.getText());
+
             double num1 = Double.parseDouble(number1Field.getText());
             double num2 = Double.parseDouble(number2Field.getText());
 
-            double sum = num1 + num2;
-            double product = num1 * num2;
-
-            resultLabel.setText("Sum: " + sum + ", Product: " + product);
+            resultLabel.setText(text);
 
             // Save to DB
-            ResultService.saveResult(num1, num2, sum, product);
+            ResultService.saveResult(num1, num2, num1 + num2, num1 * num2, num1 - num2, num1 / num2);
 
         } catch (NumberFormatException e) {
             resultLabel.setText("Please enter valid numbers!");

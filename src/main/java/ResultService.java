@@ -26,7 +26,7 @@ public class ResultService {
                 "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     }
 
-    public static void saveResult(double n1, double n2, double sum, double product) {
+    public static void saveResult(double n1, double n2, double sum, double product, double subtract, double divide) {
         String dbUrl = getDatabaseUrl();
 
         try (Connection conn = DriverManager.getConnection(dbUrl, DB_USER, DB_PASSWORD);
