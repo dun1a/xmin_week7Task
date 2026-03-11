@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ResultService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: ResultService (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResultService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;import java.sql.*;
+&nbsp;
+<b class="nc">&nbsp;public class ResultService {</b>
+&nbsp;
+&nbsp;    private static final String DB_NAME = &quot;calc_data&quot;;
+&nbsp;    private static final String DB_USER = &quot;root&quot;;
+&nbsp;    private static final String DB_PASSWORD = &quot;Test12&quot;;
+&nbsp;
+&nbsp;    // Load MariaDB driver
+&nbsp;    static {
+&nbsp;        try {
+<b class="nc">&nbsp;            Class.forName(&quot;org.mariadb.jdbc.Driver&quot;);</b>
+&nbsp;        } catch (ClassNotFoundException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private static String getDatabaseHost() {
+<b class="nc">&nbsp;        String host = System.getenv(&quot;DB_HOST&quot;);</b>
+<b class="nc">&nbsp;        if (host == null || host.isEmpty()) host = &quot;db&quot;; // use Docker service name</b>
+<b class="nc">&nbsp;        return host;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private static String getDatabaseUrl() {
+<b class="nc">&nbsp;        return &quot;jdbc:mariadb://&quot; + getDatabaseHost() + &quot;:3306/&quot; + DB_NAME +</b>
+&nbsp;                &quot;?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC&quot;;
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void saveResult(double n1, double n2, double sum, double product, double subtract, double divide) {
+<b class="nc">&nbsp;        String dbUrl = getDatabaseUrl();</b>
+&nbsp;
+<b class="nc">&nbsp;        try (Connection conn = DriverManager.getConnection(dbUrl, DB_USER, DB_PASSWORD);</b>
+<b class="nc">&nbsp;             Statement stmt = conn.createStatement()) {</b>
+&nbsp;
+&nbsp;            // Create table if it doesn&#39;t exist
+<b class="nc">&nbsp;            String createTable = &quot;&quot;&quot;</b>
+&nbsp;                CREATE TABLE IF NOT EXISTS calc_results (
+&nbsp;                    id INT AUTO_INCREMENT PRIMARY KEY,
+&nbsp;                    number1 DOUBLE NOT NULL,
+&nbsp;                    number2 DOUBLE NOT NULL,
+&nbsp;                    sum_result DOUBLE NOT NULL,
+&nbsp;                    product_result DOUBLE NOT NULL,
+&nbsp;                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+&nbsp;                )
+&nbsp;                &quot;&quot;&quot;;
+<b class="nc">&nbsp;            stmt.executeUpdate(createTable);</b>
+&nbsp;
+&nbsp;            // Insert the result
+<b class="nc">&nbsp;            String insert = &quot;INSERT INTO calc_results (number1, number2, sum_result, product_result) VALUES (?, ?, ?, ?)&quot;;</b>
+<b class="nc">&nbsp;            try (PreparedStatement ps = conn.prepareStatement(insert)) {</b>
+<b class="nc">&nbsp;                ps.setDouble(1, n1);</b>
+<b class="nc">&nbsp;                ps.setDouble(2, n2);</b>
+<b class="nc">&nbsp;                ps.setDouble(3, sum);</b>
+<b class="nc">&nbsp;                ps.setDouble(4, product);</b>
+<b class="nc">&nbsp;                ps.executeUpdate();</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            System.out.println(&quot;✅ Result saved: &quot; + n1 + &quot;, &quot; + n2 + &quot; → Sum=&quot; + sum + &quot;, Product=&quot; + product);</b>
+&nbsp;
+&nbsp;
+&nbsp;        } catch (SQLException e) {
+<b class="nc">&nbsp;            System.err.println(&quot;❌ Failed to save result to DB: &quot; + dbUrl);</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-03-11 14:25</div>
+</div>
+</body>
+</html>
