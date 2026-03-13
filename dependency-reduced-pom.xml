@@ -19,7 +19,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.MainApp</mainClass>
+                            <mainClass>MainApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -29,7 +29,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>org.example.MainApp</mainClass>
+                    <mainClass>MainApp</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -44,7 +44,7 @@
                         <configuration>
                             <transformers>
                                 <transformer>
-                                    <mainClass>org.example.MainApp</mainClass>
+                                    <mainClass>MainApp</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
